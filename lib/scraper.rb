@@ -33,7 +33,7 @@ class Scraper
 
       student_data = {}
 
-      social_data = page.css(".social-icon-container").collect {|social|
+      social_data = page.css(".social-icon-container").children.css("a").collect {|social|
       social.attribute("href").value}
 
       social_data.each do |address|

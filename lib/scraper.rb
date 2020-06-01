@@ -37,13 +37,13 @@ class Scraper
       social.attribute("href").value}
 
       social_data.each do |address|
-        if address.attribute("a").value.include?("twitter")
+        if address.include?("twitter")
           student_data[:twitter] = address
-        elsif address.attribute("a").value.include?("linkedin")
+        elsif address.include?("linkedin")
             student_data[:linkedin] = address
-        elsif address.attribute("a").value.include?("github")
+        elsif address.include?("github")
             student_data[:github] = address
-        else address.attribute("a").value.include?("blog")
+        else address.include?("blog")
             student_data[:blog] = address
         end
           student_data[:profile_quote] = page.css("div.profile-quote").text

@@ -29,11 +29,11 @@ class Scraper
   def self.scrape_profile_page(profile_url) #hash of each student's social media addresses
     # can handle profile pages w/out all the social links
     profile_url = "https://learn-co-curriculum.github.io/student-scraper-test-page/students/ryan-johnson.html"
-      page = Nokogiri::HTML(open(profile_url))
+        page = Nokogiri::HTML(open(profile_url))
 
       student_data = {}
 
-      social_data = page.css("div.social-icon-container a").collect {|social|
+      social_data = page.css(".social-icon-container").collect {|social|
       social.attribute("href").value}
 
       social_data.each do |address|

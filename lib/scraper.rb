@@ -51,3 +51,4 @@ class Scraper
         end
           student_data
     end
+end

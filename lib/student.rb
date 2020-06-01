@@ -5,7 +5,7 @@ class Student
   @@all = []
 
   def initialize(student_hash) #use meta-programming to assign the key/value pairs to newly created students
-    student_hash.each {|key, value| self.send(("#{key}="), vlaue)}
+    student_hash.each {|key, value| self.send(("#{key}="), value)}
     end
     @@all << student_hash[:name]
   end

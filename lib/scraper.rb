@@ -45,7 +45,7 @@ class Scraper
             student_data[:github] = address
         else address.attribute("href").value.include?("blog")
             student_data[:blog] = address
-
+          end
         end
           student_data[:profile_quote] = page.css("div.profile-quote").text
           student_data[:bio] = page.css("div.description-holder p").text

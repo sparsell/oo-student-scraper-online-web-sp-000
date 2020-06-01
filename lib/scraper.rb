@@ -1,40 +1,55 @@
 require 'nokogiri'
 require 'open-uri'
+require 'pry'
 
 
 class Scraper
 
   def self.scrape_index_page(index_url) #array of hashes
-    scraped_students = Nokogiri::HTML(open('https://learn-co-curriculum.github.io/student-scraper-test-page/index.html'))
-
-    name = scraped_students.css("h4").text
-    location = scraped_students.css("p").text
-    profile_url = scraped_students.css("div.student-card a").attribute("href").value
+    scraped_students = Nokogiri::HTML(open(index_url))
 
     students = []
 
-      #scraped_students.css("h4").text.each do
+      scraped_students.css("div.student-card").each do |student|
+        name = student.css("h4.student-name").text
+        location = student.css("p.student-location").text
+        profile_url = student.css("a").attribute("href").value
 
-  end
+        student_info = {
+          :name => name,
+          :location => location,
+          :profile_url => profile_url
+        }
+        students << student_info
+      end
+      students
+    end
 
-  def self.scrape_profile_page(profile_url) #hash of each student
-    scraped_student #hash
-    # :profile_url #a
 
-#     def create_project_hash
-#   html = File.read('fixtures/kickstarter.html')
-#   kickstarter = Nokogiri::HTML(html)
-#
-#   projects = {}
-#
-#   # Iterate through the projects
-#   kickstarter.css("li.project.grid_4").each do |project|
-#     projects[project] = {}
-#   end
-#
-#   # return the projects hash
-#   projects
-# end
-  end
+  def self.scrape_profile_page(profile_url) #hash of each student's social media addresses
+    # can handle profile pages w/out all the social links
+    profile_url = "https://learn-co-curriculum.github.io/student-scraper-test-page/students/ryan-johnson.html"
+      page = Nokogiri::HTML(open(profile_url))
 
+      student_data = {}
+
+      social_data = page.css("div.social-icon-container a").collect {|social|
+      social.attribute("href").value}
+
+      social_data.each do |address|
+        if address.attribute("href").value.include?("twitter")
+          student_data[:twitter] = address
+        elsif address.attribute("href").value.include?("linkedin")
+            student_data[:linkedin] = address
+        elsif address.attribute("href").value.include?("github")
+            student_data[:github] = address
+        else address.attribute("href").value.include?("blog")
+            student_data[:blog] = address
+
+        end
+          student_data[:profile_quote] = page.css("div.profile-quote").text
+          student_data[:bio] = page.css("div.description-holder p").text
+        end
+          student_data
+    end
 end
